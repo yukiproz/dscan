@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# dscan — fast disk analysis using gdu-go in non-interactive mode.
+#
+# Why gdu-go and not du? du walks the whole tree slowly; gdu-go is
+# dramatically faster for the same answer. Never pipe human-readable
+# gdu-go output through `sort -rn` — it ranks "933 MiB" above "11 GiB".
+# Use --no-prefix (raw bytes) when you need to sort.
+#
+# Usage:
+#   dscan                 # disks overview + top-level breakdown of $HOME
+#   dscan /some/path      # breakdown of path (depth 2)
+#   dscan /some/path 3    # breakdown of path (depth 3)
+#   dscan --remote 'ssh host' /some/path   # run the scan on a remote host
+set -euo pipefail
+
+REMOTE=""
+if [[ "${1:-}" == "--remote" ]]; then
+  REMOTE="$2"; shift 2
+fi
+
+run() {
+  if [[ -n "$REMOTE" ]]; then
+    # shellcheck disable=SC2029
+    ssh "$REMOTE" "$1"
+  else
+    bash -c "$1"
+  fi
+}
+
+if [[ $# -eq 0 ]]; then
+  run 'df -h --output=target,size,used,avail,pcent 2>/dev/null | head -20'
+  echo "=== HOME (depth 1) ==="
+  run 'gdu-go -n -p -c --depth 1 "$HOME" 2>/dev/null | head -30'
+  exit 0
+fi
+
+TARGET="$1"
+DEPTH="${2:-2}"
+# basic sanity: absolute path, no shell metacharacters
+if [[ "$TARGET" != /* || "$TARGET" =~ [\;\|\\&\$\"\`] ]]; then
+  echo "dscan: refusing suspicious path: $TARGET" >&2
+  exit 2
+fi
+run "gdu-go -n -p -c --depth $DEPTH '$TARGET' 2>/dev/null | head -40"
