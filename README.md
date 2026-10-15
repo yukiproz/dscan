@@ -1,12 +1,12 @@
 # ❄ dscan
 
-pemindai disk. cepat, tanpa basa-basi, memakai gdu-go.
+a disk scanner. fast, no small talk, powered by gdu-go.
 
-pengembara harus tahu medannya.
+a wanderer must know the terrain.
 
-## pasang
+## install
 
-butuh [gdu-go](https://github.com/dundee/gdu) di PATH.
+needs [gdu-go](https://github.com/dundee/gdu) in PATH.
 
 ```sh
 git clone https://github.com/yukiproz/dscan.git
@@ -14,19 +14,19 @@ cd dscan && chmod +x dscan
 sudo ln -s "$PWD/dscan" /usr/local/bin/dscan
 ```
 
-## pakai
+## use
 
 ```sh
-dscan                  # ringkasan disk + bedah $HOME sedalam 1 tingkat
-dscan /suatu/path      # bedah path sedalam 2 tingkat
-dscan /suatu/path 3    # bedah path sedalam 3 tingkat
-dscan --remote 'ssh mesinku' /var/log   # memindai mesin jauh lewat ssh
+dscan                  # disk overview + $HOME breakdown, depth 1
+dscan /some/path       # breakdown of a path, depth 2
+dscan /some/path 3     # breakdown of a path, depth 3
+dscan --remote 'ssh mymachine' /var/log   # scan a distant machine over ssh
 ```
 
-## satu jebakan
+## one trap
 
-jangan pernah menyalurkan output gdu-go yang ramah-manusia ke `sort -rn` —
-ia menempatkan `933 MiB` di atas `11 GiB`. pakai `--no-prefix` (byte mentah)
-kalau perlu mengurutkan, atau baca saja satuannya baik-baik.
+never pipe human-friendly gdu-go output into `sort -rn` — it ranks
+`933 MiB` above `11 GiB`. use `--no-prefix` (raw bytes) when sorting,
+or just read the units carefully.
 
-*❄ salju tidak pernah menjelaskan dirinya.*
+*❄ snow never explains itself.*
