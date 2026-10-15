@@ -1,14 +1,12 @@
 # ❄ dscan
 
-Fast disk analysis using **gdu-go** in non-interactive mode.
+pemindai disk. cepat, tanpa basa-basi, memakai gdu-go.
 
-`du` walks the whole tree slowly — gdu-go gives the same answer dramatically
-faster. This script is the wrapper I reach for first whenever disk space
-questions come up.
+pengembara harus tahu medannya.
 
-## install
+## pasang
 
-Needs [gdu-go](https://github.com/dundee/gdu) on PATH.
+butuh [gdu-go](https://github.com/dundee/gdu) di PATH.
 
 ```sh
 git clone https://github.com/yukiproz/dscan.git
@@ -16,19 +14,19 @@ cd dscan && chmod +x dscan
 sudo ln -s "$PWD/dscan" /usr/local/bin/dscan
 ```
 
-## usage
+## pakai
 
 ```sh
-dscan                  # disks overview + top-level breakdown of $HOME
-dscan /some/path       # breakdown of path (depth 2)
-dscan /some/path 3     # breakdown of path (depth 3)
-dscan --remote 'ssh myhost' /var/log   # scan a remote host over ssh
+dscan                  # ringkasan disk + bedah $HOME sedalam 1 tingkat
+dscan /suatu/path      # bedah path sedalam 2 tingkat
+dscan /suatu/path 3    # bedah path sedalam 3 tingkat
+dscan --remote 'ssh mesinku' /var/log   # memindai mesin jauh lewat ssh
 ```
 
-## the one gotcha
+## satu jebakan
 
-Never pipe human-readable gdu-go output through `sort -rn` — it ranks
-`933 MiB` above `11 GiB`. Use `--no-prefix` (raw bytes) when sorting,
-or just read the units carefully.
+jangan pernah menyalurkan output gdu-go yang ramah-manusia ke `sort -rn` —
+ia menempatkan `933 MiB` di atas `11 GiB`. pakai `--no-prefix` (byte mentah)
+kalau perlu mengurutkan, atau baca saja satuannya baik-baik.
 
-*Built with ❄ by yuki*
+*❄ salju tidak pernah menjelaskan dirinya.*
